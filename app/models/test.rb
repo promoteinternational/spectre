@@ -36,8 +36,12 @@ class Test < ActiveRecord::Base
     "#{run.url}#test_#{id}"
   end
 
+  def key_for(run)
+    "#{run.suite.project.name} #{run.suite.name} #{name} #{browser} #{size}".parameterize
+  end
+
   def create_key
-    self.key = "#{run.suite.project.name} #{run.suite.name} #{name} #{browser} #{size}".parameterize
+    self.key = key_for(run)
     self.save
   end
 

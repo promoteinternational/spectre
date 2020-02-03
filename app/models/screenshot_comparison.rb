@@ -4,8 +4,8 @@ require 'image_geometry'
 class ScreenshotComparison
   attr_reader :pass
 
-  def initialize(test, screenshot)
-    determine_baseline_image(test, screenshot)
+  def initialize(test, screenshot, baseline_run_id = nil)
+    determine_baseline_image(test, screenshot, baseline_run_id)
     image_paths = temp_screenshot_paths(test)
     compare_result = compare_images(test, image_paths)
     @pass = determine_pass(test, image_paths, compare_result)
@@ -45,9 +45,15 @@ class ScreenshotComparison
     )
   end
 
-  def determine_baseline_image(test, screenshot)
+  def determine_baseline_image(test, screenshot, baseline_run_id)
     # find an existing baseline screenshot for this test
     baseline_test = Baseline.find_by_key(test.key)
+
+    # use baseline from a previous test run, branch-off point
+    if !baseline_test && baseline_run_id
+      baseline_run = Run.find(baseline_run_id)
+      baseline_test = Tests.find_by_key(test.key_for(baseline_run))
+    end
 
     # grab the existing baseline image and cache it against this test
     # otherwise compare against itself
