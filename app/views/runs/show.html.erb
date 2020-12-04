@@ -9,7 +9,7 @@
   <li>#<%= @run.sequential_id %></li>
 </ul>
 
-<h1>Run #<%= @run.sequential_id %> <span class="text-muted">(<%= @run.suite.name %>)</span></h1>
+<h1>Run #<%= @run.sequential_id %> <span class="text-muted">(<%= @run.suite.name %>) <%= "<#{@run.commit}>" if @run.commit %></span></h1>
 
 <%= render 'shared/test_filters', test_filters: @test_filters %>
 

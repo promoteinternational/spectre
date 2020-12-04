@@ -22,7 +22,8 @@ class RunsController < ApplicationController
   def create
     project = Project.find_or_create_by(name: params[:project])
     suite = project.suites.find_or_create_by(name: params[:suite])
-    @run = suite.runs.create
+    suite.init_from_commit(params[:init_from_commit])
+    @run = suite.runs.create(commit: params[:commit])
     render :json => @run.to_json
   end
 end

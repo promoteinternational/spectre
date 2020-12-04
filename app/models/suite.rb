@@ -20,4 +20,19 @@ class Suite < ActiveRecord::Base
   def purge_old_runs
     self.runs.order(id: :desc).offset(30).destroy_all
   end
+
+  def init_from_commit(commit)
+    if baselines.count == 0 && commit
+      from_run = Run.order(created_at: :asc).find_by_commit(commit)
+      if from_run
+        create_baselines(from_run)
+      end
+    end
+  end
+
+  def create_baselines(from_run)
+    from_run.tests.each do |test|
+      test.dup_baseline(self)
+    end
+  end
 end

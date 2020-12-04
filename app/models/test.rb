@@ -71,6 +71,19 @@ class Test < ActiveRecord::Base
     previous_tests.all? { |t| t.pass == false }
   end
 
+  def dup_baseline(to_suite)
+    other_key = "#{to_suite.project.name} #{to_suite.name} #{name} #{browser} #{size}".parameterize
+    Baseline.create!(
+      key: other_key,
+      name: self.name,
+      browser: self.browser,
+      size: self.size,
+      suite: to_suite,
+      screenshot: self.screenshot,
+      test_id: nil
+    )
+  end
+
   private
 
   def default_values
