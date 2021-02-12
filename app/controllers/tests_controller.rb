@@ -17,10 +17,13 @@ class TestsController < ApplicationController
   end
 
   def create
-    ImageProcessor.crop(test_params[:screenshot].path, test_params[:crop_area]) if test_params[:crop_area]
-    @test = Test.create!(test_params)
-    ScreenshotComparison.new(@test, test_params[:screenshot])
-    render json: @test.to_json
+    if params[:immediate]
+      ProcessTestJob.perform_now(test_params.to_unsafe_hash)
+      render json: @test.to_json
+    else
+      ProcessTestJob.perform_later(test_params.to_unsafe_hash)
+      render json: {}
+    end
   end
 
   private
