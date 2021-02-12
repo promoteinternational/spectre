@@ -5,6 +5,10 @@ class Suite < ActiveRecord::Base
   has_many :baselines, dependent: :destroy
   after_initialize :create_slug
 
+  def self.purge_all_old_runs
+    Suite.all.map(&:purge_old_runs)
+  end
+
   def latest_run
     runs.order(id: :desc).first
   end

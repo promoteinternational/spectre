@@ -1,5 +1,4 @@
 class Run < ActiveRecord::Base
-  after_create :purge_old_runs
   belongs_to :suite
   has_many :tests, dependent: :destroy
   acts_as_sequenced scope: :suite_id
@@ -28,11 +27,5 @@ class Run < ActiveRecord::Base
 
   def url
     Rails.application.routes.url_helpers.project_suite_run_path(self.suite.project, self.suite, self)
-  end
-
-  private
-
-  def purge_old_runs
-    self.suite.purge_old_runs
   end
 end
