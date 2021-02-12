@@ -28,6 +28,6 @@ class TestFilters
     if filter_by_status
       @tests = @tests.where(pass: (@params[:status] == 'pass' ? true : false)) unless @params[:status].blank?
     end
-    return @tests
+    return @tests.sort_by(&:name)
   end
 end
