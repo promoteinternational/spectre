@@ -1,6 +1,6 @@
 .test {
   th, td {
-    padding: 3em 1em;
+    padding: 1em 1em;
     position: relative;
   }
 
@@ -14,6 +14,11 @@
 .test__name {
   margin-bottom: 5px;
   word-break: break-word;
+  @include font-size('tiny');
+}
+
+.test__environment {
+  @include font-size('tiny');
 }
 
 .test__image {
@@ -21,7 +26,7 @@
   display: block;
 
   img {
-    box-sizing: border-box;
+    box-sizing: content-box;
     display: block;
     border: 3px solid colour('light-grey');
     width: 300px
@@ -37,6 +42,10 @@
   display: block;
   margin-bottom: 5px;
   white-space: nowrap;
+}
+
+input.test__set-baseline {
+  padding: 3em 1em;
 }
 
 .test__set-baseline {

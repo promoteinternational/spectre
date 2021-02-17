@@ -2,7 +2,7 @@
   <th>
     <span class="test__name"><%= link_to_unless(test.source_url.blank?, test.name, test.source_url)  %></span>
     <p>
-      <small class="text-muted">
+      <small class="text-muted test__environment">
         <%= test.browser %>, <%= test.size %>
       </small>
     </p>
