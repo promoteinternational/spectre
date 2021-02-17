@@ -18,10 +18,10 @@ class TestsController < ApplicationController
 
   def create
     if params[:immediate]
-      ProcessTestJob.perform_now(test_params.to_unsafe_hash)
+      ProcessTestJob.new.perform(test_params.to_unsafe_hash)
       render json: @test.to_json
     else
-      ProcessTestJob.perform_later(test_params.to_unsafe_hash)
+      ProcessTestJob.perform_async(test_params.to_unsafe_hash)
       render json: {}
     end
   end

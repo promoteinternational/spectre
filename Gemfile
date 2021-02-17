@@ -24,6 +24,8 @@ gem 'image_size'
 
 gem 'unicorn'
 
+gem 'sidekiq'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
