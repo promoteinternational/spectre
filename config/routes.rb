@@ -5,7 +5,9 @@ Rails.application.routes.draw do
 
   resources :projects, param: :slug, only: [:index] do
     resources :suites, param: :slug, only: [:show] do
-      resources :runs, param: :sequential_id, only: [:show]
+      resources :runs, param: :sequential_id, only: [:show] do
+        post :pass_all, on: :member 
+      end
     end
   end
 

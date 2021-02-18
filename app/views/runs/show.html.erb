@@ -34,3 +34,7 @@
     <% end %>
   </tbody>
 </table>
+
+<% if @run == @run.suite.latest_run && @run.suite.slug == 'master' %>
+  <%= link_to "Accept all", pass_all_project_suite_run_path(@run.suite.project, @run.suite, @run), method: :post %>
+<% end %>

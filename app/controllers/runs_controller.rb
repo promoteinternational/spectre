@@ -26,4 +26,17 @@ class RunsController < ApplicationController
     @run = suite.runs.create(commit: params[:commit])
     render :json => @run.to_json
   end
+
+  def pass_all
+    project = Project.find_by_slug!(params[:project_slug])
+    suite = project.suites.find_by_slug!(params[:suite_slug])
+    @run = suite.runs.find_by_sequential_id!(params[:sequential_id])
+    @run.transaction do
+      @run.tests.each do |test|
+        test.pass = true
+        test.save
+      end
+    end
+    redirect_to project_suite_url(project, suite)
+  end
 end
