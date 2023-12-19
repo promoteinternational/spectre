@@ -1,4 +1,22 @@
-default: &default
+development:
+  adapter: postgresql
+  encoding: utf8
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  pool: 5
+  timeout: 5000
+  database: spectre_development
+
+test: &test
+  adapter: postgresql
+  encoding: utf8
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  pool: 5
+  timeout: 5000
+  database: spectre_test
+
+cucumber:
   adapter: postgresql
   encoding: utf8
   username: <%= ENV['DATABASE_USERNAME'] %>
@@ -6,17 +24,10 @@ default: &default
   pool: 5
   timeout: 5000
 
-development:
-  <<: *default
-  database: spectre_development
-
-test: &test
-  <<: *default
-  database: spectre_test
-
-cucumber:
-  <<: *test
-
 production:
-  <<: *default
+  adapter: postgresql
+  encoding: utf8
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  pool: 5
   url: <%= ENV['DATABASE_URL'] %>

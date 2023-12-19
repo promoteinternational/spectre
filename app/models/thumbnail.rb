@@ -30,7 +30,7 @@ class Thumbnail
 
   def url
     file = thumbnail_file_path
-    unless File.exists?(file)
+    unless File.exist?(file)
       begin
         create_thumbnail.to_file(file)
       rescue Exception => e
@@ -41,6 +41,6 @@ class Thumbnail
   end
 
   def delete
-    File.delete(thumbnail_file_path) if File.exists?(thumbnail_file_path)
+    File.delete(thumbnail_file_path) if File.exist?(thumbnail_file_path)
   end
 end

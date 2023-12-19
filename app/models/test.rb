@@ -95,7 +95,7 @@ class Test < ActiveRecord::Base
 
   def update_baseline
     return unless self.pass
-    Baseline.find_or_initialize_by(key: self.key).update_attributes!(
+    Baseline.find_or_initialize_by(key: self.key).update!(
       key: self.key,
       name: self.name,
       browser: self.browser,

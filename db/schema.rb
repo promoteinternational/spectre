@@ -2,87 +2,75 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200417221833) do
-
+ActiveRecord::Schema[7.1].define(version: 2023_12_19_112503) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "baselines", force: :cascade do |t|
-    t.string   "name"
-    t.string   "browser"
-    t.string   "size"
-    t.integer  "suite_id"
-    t.string   "screenshot_uid"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.string   "key"
-    t.integer  "test_id"
-    t.index ["suite_id"], name: "index_baselines_on_suite_id", using: :btree
+  create_table "baselines", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "browser"
+    t.string "size"
+    t.integer "suite_id"
+    t.string "screenshot_uid"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "key"
+    t.integer "test_id"
+    t.index ["suite_id"], name: "index_baselines_on_suite_id"
   end
 
-  create_table "friendly_id_slugs", force: :cascade do |t|
-    t.string   "slug",                      null: false
-    t.integer  "sluggable_id",              null: false
-    t.string   "sluggable_type", limit: 50
-    t.string   "scope"
-    t.datetime "created_at"
-    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, using: :btree
-    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
-    t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
-    t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
+  create_table "projects", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "slug"
   end
 
-  create_table "projects", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "slug"
+  create_table "runs", id: :serial, force: :cascade do |t|
+    t.integer "suite_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.integer "sequential_id"
+    t.string "commit"
+    t.index ["suite_id"], name: "index_runs_on_suite_id"
   end
 
-  create_table "runs", force: :cascade do |t|
-    t.integer  "suite_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.integer  "sequential_id"
-    t.string   "commit"
-    t.index ["suite_id"], name: "index_runs_on_suite_id", using: :btree
+  create_table "suites", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.integer "project_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "slug"
+    t.index ["project_id"], name: "index_suites_on_project_id"
   end
 
-  create_table "suites", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "slug"
-  end
-
-  create_table "tests", force: :cascade do |t|
-    t.string   "name"
-    t.string   "browser"
-    t.string   "size"
-    t.integer  "run_id"
-    t.float    "diff"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "screenshot_uid"
-    t.string   "screenshot_baseline_uid"
-    t.string   "screenshot_diff_uid"
-    t.string   "key"
-    t.boolean  "pass"
-    t.string   "source_url"
-    t.string   "fuzz_level"
-    t.string   "highlight_colour"
-    t.string   "crop_area"
-    t.index ["run_id"], name: "index_tests_on_run_id", using: :btree
+  create_table "tests", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "browser"
+    t.string "size"
+    t.integer "run_id"
+    t.float "diff"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.string "screenshot_uid"
+    t.string "screenshot_baseline_uid"
+    t.string "screenshot_diff_uid"
+    t.string "key"
+    t.boolean "pass"
+    t.string "source_url"
+    t.string "fuzz_level"
+    t.string "highlight_colour"
+    t.string "crop_area"
+    t.index ["run_id"], name: "index_tests_on_run_id"
   end
 
   add_foreign_key "baselines", "suites"

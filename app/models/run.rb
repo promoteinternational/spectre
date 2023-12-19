@@ -11,7 +11,7 @@ class Run < ActiveRecord::Base
     sequential_id.to_s
   end
 
-  def as_json(options)
+  def as_json(options = nil)
     run = super(options)
     run[:url] = self.url
     return run

@@ -1,4 +1,4 @@
-class ChangeDragonflyFields < ActiveRecord::Migration
+class ChangeDragonflyFields < ActiveRecord::Migration[5.0]
   def change
     remove_column :runs, :screenshot_uid, :string
     remove_column :runs, :screenshot_baseline_uid, :string
