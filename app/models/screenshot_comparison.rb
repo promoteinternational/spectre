@@ -45,9 +45,24 @@ class ScreenshotComparison
         test.screenshot_baseline = screenshot
       end
     else
-      test.screenshot_baseline = screenshot
+      # Instead create diffs for new tests
+      add_new_test_waterwark(test)
     end
 
+    test.save!
+  end
+
+  def add_new_test_waterwark(test)
+    # todo, this can't be cleaned up before fully processed
+    temp = Tempfile.new('new-test')
+    command = "convert #{test.screenshot.path.shellescape} -fill '#d54e53' -gravity North "\
+      "-pointsize 100 -annotate +0+100 '███ New test! ███' #{temp.path.shellescape}"
+    `#{command}`
+
+    def temp.original_filename
+      "#{SecureRandom.alphanumeric}.png"
+    end
+    test.screenshot_baseline = temp
     test.save!
   end
 
